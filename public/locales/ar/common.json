@@ -1,0 +1,12 @@
+{
+  "more": "المزيد",
+  "tabularView": "عرض الجدول (مأتمت)",
+  "cardView": "عرض البطاقات (باليد)",
+  "title": "التذاكر",
+  "ticket": {
+    "subject": "العنوان",
+    "priority": "الأهمية",
+    "status": "الحالة",
+    "description": "الوصف"
+  }
+}

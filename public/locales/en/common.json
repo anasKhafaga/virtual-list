@@ -1,0 +1,12 @@
+{
+  "more": "More",
+  "tabularView": "Tabular View (Automated Virtualization)",
+  "cardView": "Cards View (Manual Virtualization)",
+  "title": "Tickets",
+  "ticket": {
+    "subject": "Subject",
+    "priority": "Priority",
+    "status": "Status",
+    "description": "Description"
+  }
+}
