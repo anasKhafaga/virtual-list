@@ -1,3 +1,7 @@
+import React, { useContext } from 'react';
+import { useInfiniteQuery, QueryFunction } from '@tanstack/react-query';
+import { PageRawData } from '@/types/dashboard';
+import { AppContext } from '@/contexts/app';
 import { Tooltip, type TableColumnsType } from "antd";
 import type { EntryDataType } from "@/types/dashboard";
 import { useTranslation } from "next-i18next";
@@ -72,3 +76,27 @@ export const useColumns = (): TableColumnsType<EntryDataType> => {
     }
   ]
 }
+
+export const useFetchTickets = () => {  
+  const { qAxios } = useContext(AppContext);
+
+  const queryFn: QueryFunction<PageRawData, [string], number> = async ({ pageParam }) => {
+    return (await qAxios.get(`api/tickets?page=${pageParam}`))?.data
+  }
+
+  const response = useInfiniteQuery({
+    queryKey: ['tickets'],
+    queryFn,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, _, lastPageParam) => {            
+      if(lastPage && (lastPageParam as number) < lastPage.meta.total_pages) {
+        return (lastPageParam as number) + 1;
+      }
+  
+      return null;
+    }
+  })
+
+  return response;
+  
+} 

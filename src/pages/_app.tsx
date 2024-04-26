@@ -7,48 +7,33 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import enUS from 'antd/locale/en_US';
 import arEG from 'antd/locale/ar_EG';
 import { localeMapValue } from '@/types/global';
-import { Cairo, Poppins } from "next/font/google";
 import { useRouter } from "next/router";
 import { AppContextProvider } from "@/contexts/app";
 
-const poppins = Poppins({
-  weight: ["100", "200", "300", "400", "500", "600", "700", "900"],
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-english",
-});
+  
+const localeMap = new Map<string, localeMapValue>([
+  ['en', {locale: enUS, dir: 'ltr', fontFamily: "var(--font-english)" }],
+  ['ar', {locale: arEG, dir: 'rtl', fontFamily: "var(--font-arabic)" }]
+])
 
-const cairo = Cairo({
-  weight: ["200", "300", "400", "500", "600", "700", "900"],
-  subsets: ["latin"],
-  variable: "--font-arabic",
-  display: "swap",
-});
 
-  
-  const localeMap = new Map<string, localeMapValue>([
-    ['en', {locale: enUS, dir: 'ltr', fontFamily: "var(--font-english)" }],
-    ['ar', {locale: arEG, dir: 'rtl', fontFamily: "var(--font-arabic)" }]
-  ])
-  
-  
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        refetchOnWindowFocus: false,
-      },
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
     },
-  })
+  },
+})
 
 
 function App({ Component, pageProps }: AppProps) {
   const { locale } = useRouter();
-  const fontFamily = localeMap.get(locale ?? "en")?.fontFamily;
+  const fontFamily = localeMap.get(locale ?? "en")?.fontFamily as string;
   const dir = localeMap.get(locale ?? "en")?.dir;
   const antLocale = localeMap.get(locale ?? "en")?.locale;
 
   useEffect(() => {
-    document.body.classList.add(locale=== "ar" ? cairo.variable : poppins.variable)
+    document.body.style.fontFamily = fontFamily
   })
   
   return (

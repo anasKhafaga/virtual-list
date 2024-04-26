@@ -1,47 +1,15 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Form, Radio, Card, RadioChangeEvent } from 'antd';
 import TicketCard, { TicketCardProps } from './TicketCard';
-import { useInfiniteQuery, QueryFunction } from '@tanstack/react-query';
-import type { EntryDataType, PageRawData } from '@/types/dashboard';
-import { AppContext } from '@/contexts/app';
+import type { EntryDataType } from '@/types/dashboard';
+import { useFetchTickets } from '@/hooks/dashboard';
 import { calcScrollState, getCurrentTicketList } from '@/util/virtualList';
-
-const mockData: EntryDataType[] = Array.from(Array(20000), (_, idx) => ({
-  id: idx,
-  subject: `Ticket ${idx+1}`,
-  status: 'Active',
-  description: 'This is desc',
-  priority: 'High'
-}))
-
-const useFetchTickets = () => {  
-  const { qAxios } = useContext(AppContext);
-
-  const queryFn: QueryFunction<PageRawData, [string], number> = async ({ pageParam }) => {
-    return (await qAxios.get(`tickets?page=${pageParam}`))?.data
-  }
-
-  const response = useInfiniteQuery({
-    queryKey: ['tickets'],
-    queryFn,
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, _, lastPageParam) => {            
-      if(lastPage && (lastPageParam as number) < lastPage.meta.total_pages) {
-        return (lastPageParam as number) + 1;
-      }
-  
-      return null;
-    },
-    enabled: false
-  })
-
-  return response;
-  
-} 
+import { useTranslation } from 'next-i18next';
 
 const CardEntries: React.FC = () => {
   const [items, setItems] = useState<React.ReactNode[]>([]);
   const [ticketHeight, setTicketHeight] = useState(175);
+  const { t } = useTranslation();
   const [mainCardHeight, setMainCardHeight] = useState(1000);
   const [scrollState, setScrollState] = useState({
     index: 0,
@@ -49,13 +17,11 @@ const CardEntries: React.FC = () => {
   })
   
   const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading
+    data
   } = useFetchTickets();
-
+  
+  const dataArray = useMemo(() => data?.pages.map(page => page.tickets).flat() ?? [], [ data?.pages, data?.pages.length ])
+  
   const renderTicketCB = (props: TicketCardProps) => <TicketCard key={props.index} {...props} />
 
   const scrollHandler = useCallback((e: React.UIEvent<HTMLDivElement>) => {
@@ -70,9 +36,9 @@ const CardEntries: React.FC = () => {
 
   
   useEffect(() => {
-    const currentItemList = getCurrentTicketList({start: scrollState.index, end: scrollState.end}, mockData, ticketHeight, renderTicketCB);
+    const currentItemList = getCurrentTicketList({start: scrollState.index, end: scrollState.end}, dataArray, ticketHeight, renderTicketCB);
     setItems(currentItemList);
-  }, [ scrollState, ticketHeight ])
+  }, [ scrollState, ticketHeight, dataArray ])
   
   const handleSizeChange = (e: RadioChangeEvent) => {
     setTicketHeight(e.target.value)
@@ -80,11 +46,11 @@ const CardEntries: React.FC = () => {
 
   return (
     <>
-      <Form.Item label="Size">
+      <Form.Item label={t('size')}>
         <Radio.Group data-testid='radio-group' value={ticketHeight} onChange={handleSizeChange}>
-          <Radio.Button value={200}>Large</Radio.Button>
-          <Radio.Button value={175}>Middle</Radio.Button>
-          <Radio.Button value={150}>Small</Radio.Button>
+          <Radio.Button value={200}>{t('large')}</Radio.Button>
+          <Radio.Button value={175}>{t('middle')}</Radio.Button>
+          <Radio.Button value={150}>{t('small')}</Radio.Button>
         </Radio.Group>
       </Form.Item>
       <Card onScroll={scrollHandler} style={{ height: mainCardHeight, overflow: 'auto', position: 'relative' }}>

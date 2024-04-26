@@ -1,5 +1,10 @@
 {
   "more": "More",
+  "size": "Size",
+  "large": "Large",
+  "middle": "Middle",
+  "small": "Small",
+  "switchLang": "ع",
   "tabularView": "Tabular View (Automated Virtualization)",
   "cardView": "Cards View (Manual Virtualization)",
   "title": "Tickets",

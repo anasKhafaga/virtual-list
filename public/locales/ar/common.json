@@ -1,5 +1,10 @@
 {
   "more": "المزيد",
+  "size": "الحجم",
+  "large": "كبير",
+  "middle": "متوسط",
+  "small": "صغير",
+  "switchLang": "EN",
   "tabularView": "عرض الجدول (مأتمت)",
   "cardView": "عرض البطاقات (باليد)",
   "title": "التذاكر",

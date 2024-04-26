@@ -9,6 +9,6 @@ export interface EntryDataType {
 }
 
 export interface PageRawData {
-  documents: EntryDataType[],
+  tickets: EntryDataType[],
   meta: { total_pages: number }
 }

@@ -1,5 +1,13 @@
 import '@testing-library/jest-dom';
 
+const mockData = Array.from(Array(100), (_, idx) => ({
+  id: idx,
+  subject: `Ticket ${idx}`,
+  status: 'Active',
+  description: 'This is desc',
+  priority: 'High'
+}))
+
 jest.mock('react-i18next', () => ({
   useTranslation: () => {
     return {
@@ -18,7 +26,7 @@ jest.mock('react-i18next', () => ({
 jest.mock('@tanstack/react-query', () => ({
   useInfiniteQuery: jest.fn(() => ({
     data: {
-      pages: [{ meta: { total_pages: 10 } }],
+      pages: [{ tickets: mockData, meta: { total_pages: 10 } }],
     },
     fetchNextPage: jest.fn(),
     hasNextPage: true,
