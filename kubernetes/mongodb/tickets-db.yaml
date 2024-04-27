@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tickets-db
+  labels:
+    operator: ticket
+spec:
+  selector:
+    matchLabels:
+      app: tickets-db
+  serviceName: tickets-db
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: tickets-db
+    spec:
+      containers:
+        - name: mongodb
+          image: mongo:5.0
+          ports:
+            - containerPort: 27017
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: ticket-db-secret
+                  key: USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ticket-db-secret
+                  key: PASSWORD
+          volumeMounts:
+            - name: config
+              mountPath: /etc/mongo
+            - name: data
+              mountPath: /data/db
+      volumes:
+        - name: config
+          configMap:
+            name: tickets-db-config
+            defaultMode: 0444
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+      labels:
+        operator: ticket
+    spec:
+      accessModes: 
+       - ReadWriteOnce
+      resources:
+        requests:
+          storage: 250Mi

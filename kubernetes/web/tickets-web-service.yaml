@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets-web
+  labels:
+    operator: ticket
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: tickets-web
+  type: ClusterIP

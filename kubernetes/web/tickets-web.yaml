@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-web
+  labels:
+    operator: ticket
+spec:
+  selector:
+    matchLabels:
+      app: tickets-web
+  template:
+    metadata:
+      labels:
+        app: tickets-web
+    spec:
+      containers:
+        - name: web
+          image: tickets-app
+          imagePullPolicy: Never
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: tickets-web-secret
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tickets-web-secret
+                  key: DB_PASSWORD

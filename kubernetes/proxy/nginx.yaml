@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: tickets-proxy
+  labels:
+    operator: ticket
+spec:
+  selector:
+    matchLabels:
+      app: tickets-proxy
+  template:
+    metadata:
+      labels:
+        app: tickets-proxy
+    spec:
+      containers:
+        - image: nginx:1.17-alpine
+          name: nginx
+          ports:
+            - containerPort: 80
+              name: http
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/nginx/"
+              readOnly: true
+            - name: cache-volume
+              mountPath: /data/nginx/cache
+      volumes:
+        - name: config
+          configMap:
+            name: tickets-proxy-configmap
+        - name: cache-volume
+          emptyDir: {}
