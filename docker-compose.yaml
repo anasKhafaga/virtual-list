@@ -12,7 +12,14 @@ services:
       - data:/data/db
     networks:
       - tickets
-
+  tickets-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - .:/app
+    ports:
+      - "4000:3000"
 volumes:
   data:
 
