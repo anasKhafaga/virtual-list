@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useInfiniteQuery, QueryFunction } from '@tanstack/react-query';
 import { PageRawData } from '@/types/dashboard';
 import { AppContext } from '@/contexts/app';
@@ -97,6 +97,12 @@ export const useFetchTickets = () => {
     }
   })
 
+  useEffect(() => {
+    if(response.data?.pages[0].tickets.length === 0) {
+      window.alert(`If you are running the application using Docker Compose or Kubernetes, remember to visit "${window.location.origin}/api/add_tickets" first to push 200 entries`)
+    }
+  }, [ response.data ])
+  
   return response;
   
 } 

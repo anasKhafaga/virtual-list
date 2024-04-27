@@ -1,6 +1,7 @@
 import { EntryDataType } from '@/types/dashboard'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from '@/util/db';
+import { ObjectId } from 'mongodb';
  
 type ResponseData = {
   tickets: EntryDataType[];
@@ -16,12 +17,13 @@ export default async function handler(
   try {
     const { db } = await connectToDatabase();
     const tickets = await db
-      .collection<Omit<EntryDataType, 'id'>>("tickets")
+      .collection<Omit<EntryDataType, 'id'> & {_id: ObjectId}>("tickets")
       .find({})
       .toArray();
     const data: EntryDataType[] = tickets.map(ticket => ({ ...ticket, id: JSON.stringify(ticket._id)}))
     res.status(200).json({ tickets: data, meta: { total_pages: 1 } })
   } catch(e) {
+    console.log(e)
     res.status(500).end("Internal Server Error");
   }
 }

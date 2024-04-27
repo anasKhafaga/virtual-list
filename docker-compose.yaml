@@ -18,8 +18,13 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - .:/app
+    environment:
+      - NEXT_PUBLIC_DATA_ENDPOINT=tickets
+      - MONGODB_URI=mongodb://anaskhafaga:123456789@tickets-db:27017?retryWrites=true&writeConcern=majority
     ports:
       - "4000:3000"
+    networks:
+      - tickets
 volumes:
   data:
 
