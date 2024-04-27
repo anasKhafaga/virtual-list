@@ -20,7 +20,7 @@ const CardEntries: React.FC = () => {
     data
   } = useFetchTickets();
   
-  const dataArray = useMemo(() => data?.pages.map(page => page.tickets).flat() ?? [], [ data?.pages, data?.pages.length ])
+  const dataArray = useMemo(() => data?.pages.map(page => page.tickets).flat() ?? [], [ data?.pages.length ])
   
   const renderTicketCB = (props: TicketCardProps) => <TicketCard key={props.index} {...props} />
 

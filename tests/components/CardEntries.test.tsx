@@ -29,9 +29,9 @@ describe('CardEntries Component', () => {
     const { getByText } = render(<CardEntries />);
 
     // Assert
-    getByText('Large');
-    getByText('Middle');
-    getByText('Small');
+    getByText('large');
+    getByText('middle');
+    getByText('small');
   });
 
   it('changes ticket size on radio button click', () => {
@@ -39,11 +39,11 @@ describe('CardEntries Component', () => {
     const { getByText, getByTestId } = render(<CardEntries />);
     
     // Assert
-    fireEvent.click(getByText('Small'));
+    fireEvent.click(getByText('small'));
     expect(getByTestId('radio-group').querySelector('input[value="150"]')).toBeChecked();
-    fireEvent.click(getByText('Middle'));
+    fireEvent.click(getByText('middle'));
     expect(getByTestId('radio-group').querySelector('input[value="175"]')).toBeChecked();
-    fireEvent.click(getByText('Large'));
+    fireEvent.click(getByText('large'));
     expect(getByTestId('radio-group').querySelector('input[value="200"]')).toBeChecked();
 
   });

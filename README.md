@@ -67,12 +67,17 @@ Utilizing advanced techniques in development such as docker compose, static gene
 
 ### Local Development
 
-1. Start the development server:
+1. Install Packages:
+
+    ```
+    $ yarn install
+    ```
+2. Start the development server:
 
     ```
     $ yarn dev
     ```
-2. Visit [Server](http://localhost:3000)
+3. Visit [Server](http://localhost:3000)
 
 
 ## Tech Stack
