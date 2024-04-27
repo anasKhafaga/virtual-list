@@ -18,13 +18,10 @@ spec:
           image: tickets-app
           imagePullPolicy: Never
           env:
-            - name: DB_USERNAME
+            - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
                   name: tickets-web-secret
-                  key: DB_USERNAME
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: tickets-web-secret
-                  key: DB_PASSWORD
+                  key: MONGODB_URI
+            - name: NEXT_PUBLIC_DATA_ENDPOINT
+              value: tickets

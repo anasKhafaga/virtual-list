@@ -39,7 +39,7 @@ const CardEntries: React.FC = () => {
     const currentItemList = getCurrentTicketList({start: scrollState.index, end: scrollState.end}, dataArray, ticketHeight, renderTicketCB);
     setItems(currentItemList);
   }, [ scrollState, ticketHeight, dataArray ])
-  
+
   const handleSizeChange = (e: RadioChangeEvent) => {
     setTicketHeight(e.target.value)
   };

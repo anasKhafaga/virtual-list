@@ -1,7 +1,9 @@
 import React from "react";
+import { ObjectId } from "mongodb";
 
 export interface EntryDataType {
-  id: number;
+  _id?: ObjectId;
+  id: string;
   subject: string;
   priority: string;
   status: string;

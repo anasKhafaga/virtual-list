@@ -81,7 +81,7 @@ export const useFetchTickets = () => {
   const { qAxios } = useContext(AppContext);
 
   const queryFn: QueryFunction<PageRawData, [string], number> = async ({ pageParam }) => {
-    return (await qAxios.get(`api/tickets?page=${pageParam}`))?.data
+    return (await qAxios.get(`api/${process.env.NEXT_PUBLIC_DATA_ENDPOINT}?page=${pageParam}`))?.data
   }
 
   const response = useInfiniteQuery({

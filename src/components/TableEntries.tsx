@@ -37,9 +37,7 @@ const TableEntries: React.FC = () => {
 
     const callback = (mutationList: any) => {
       const tableBodyNode = document.querySelector(".ant-table-body")
-      for (const mutation of mutationList) {
-        console.log(mutation);
-        
+      for (const mutation of mutationList) {        
         if (mutation.type === "childList") {
           if(mutation.addedNodes.length > 0) {
             tableBodyNode?.classList.remove('with__scroller');
