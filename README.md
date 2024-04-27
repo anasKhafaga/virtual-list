@@ -1,27 +1,29 @@
 # Ticket App - Frontend
 
+> [!CAUTION]
+> `.env*.local` files mustn't be committed as it's supposed to contain sensetive information. I've included it here only for demonstration but it must be ignored
+
+> [!CAUTION]
+> `./kubernetes` directory contains secrets in this public repo which is used for demonstration purposes but it mustn't be committed
+
 ## Description
 
 Our application exemplifies the seamless integration of manual and automated processes in managing virtual lists within a sophisticated ecosystem tailored for frontend development. Built with NextJS, ReactJS, Typescript, AntD, and Tanstack Query, our solution embodies professionalism at every stage.
 
-Utilizing advanced techniques such as static generation for HTML optimization, meticulous minification, and efficient localization, we ensure top-tier performance and user experience.
+Utilizing advanced techniques in development such as docker compose, static generation for HTML optimization, meticulous minification, and efficient localization and in deployment like kubernetes, we ensure top-tier performance and user experience.
 
 ## Table of Contents
 
+- [Cloning](#cloning)
 - [Installation](#installation)
-  - [Running with Docker](#running-with-docker)
+  - [Running with Docker Compose in Development](#running-with-docker-compose)
+  - [Running with Kubernetes in Production](#running-with-kube)
   - [Local Development](#local-development)
 - [Tech Stack](#tech-stack)
 - [Antd and Next.js](#antd-and-nextjs)
 
 
-## Installation
-
-### Running with Docker
-
-You can run the project using Docker containers. Make sure you have Docker installed on your machine.
-
-
+## Cloning
 1. Clone the repository:
 
     ```
@@ -34,65 +36,44 @@ You can run the project using Docker containers. Make sure you have Docker insta
     $ cd virtual-list
     ```
 
-3. Build the Docker image:
+## Installation
+
+### Running with Docker Compose in Development
+1. Compose up:
+
+    ```
+    $ docker compose up
+    ```
+2. Visit [Server](http://localhost:4000)
+### Running with Kubernetes in Production
+1. Build the Docker image:
 
     ```
     $ docker build -t ticket-app .
-    ```
-4. Run the Docker container:
+
+2. Starting:
 
     ```
-    $ docker run -p 3000:3000 ticket-app
+    $ kubectl apply -f kubernetes/mongodb/
+    $ kubectl apply -f kubernetes/web/
+    $ kubectl apply -f kubernetes/proxy/
     ```
+3. Visit [Server](http://localhost:5000)
+4. Cleanup after finishing:
+
+    ```
+    $ kubectl delete all -l operator=ticket
+    ```
+
 ### Local Development
 
-To run the project locally without docker.
-
-1. Clone the repository:
-
-    ```
-    $ git@github.com:anasKhafaga/virtual-list.git
-    ```
-
-2. Navigate to the project directory:
-
-    ```
-    $ cd virtual-list
-    ```
-
-3. Start the development server:
+1. Start the development server:
 
     ```
     $ yarn dev
     ```
+2. Visit [Server](http://localhost:3000)
 
-### Production Build
-
-To run the project locally without docker.
-
-1. Clone the repository:
-
-    ```
-    $ git@github.com:anasKhafaga/virtual-list.git
-    ```
-
-2. Navigate to the project directory:
-
-    ```
-    $ cd virtual-list
-    ```
-
-3. Build:
-
-    ```
-    $ yarn build
-    ```
-
-4. Start:
-
-    ```
-    $ yarn start
-    ```
 
 ## Tech Stack
 
